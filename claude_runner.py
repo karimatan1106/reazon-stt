@@ -59,7 +59,8 @@ def send_to_claude(text):
         proc.wait(timeout=5)
         return result_text if result_text else None
     except FileNotFoundError:
-        print("  Claude CLI not found.", flush=True)
+        print("  Claude CLI not found. セットアップ:", flush=True)
+        print("    npm install -g @anthropic-ai/claude-code", flush=True)
         return None
     except Exception as e:
         print(f"  Claude error: {e}", flush=True)
