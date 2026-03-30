@@ -73,9 +73,11 @@ def send_to_claude(text):
         print("         Max/Proプランが必要\n", flush=True)
         print("      B) APIキーを環境変数にセット:", flush=True)
         print("         https://console.anthropic.com/settings/keys でキー発行", flush=True)
-        print("         set ANTHROPIC_API_KEY=sk-ant-...", flush=True)
-        print("         永続化: システム環境変数に追加するか", flush=True)
-        print("         setx ANTHROPIC_API_KEY sk-ant-... を実行\n", flush=True)
+        print("         ターミナルで以下を実行:", flush=True)
+        print("           set ANTHROPIC_API_KEY=sk-ant-...  (現在のセッションのみ)", flush=True)
+        print("           setx ANTHROPIC_API_KEY sk-ant-... (永続化、次回起動から有効)", flush=True)
+        print("         または Windows設定 → システム → バージョン情報 →", flush=True)
+        print("           システムの詳細設定 → 環境変数 で追加\n", flush=True)
         return None
     except Exception as e:
         print(f"  Claude error: {e}", flush=True)
