@@ -68,7 +68,7 @@ def send_to_claude(text):
         print("      npm install -g @anthropic-ai/claude-code\n", flush=True)
         print("  [3] 認証 (どちらか一方)\n", flush=True)
         print("      A) Claudeアカウントでログイン:", flush=True)
-        print("         claude login", flush=True)
+        print("         ターミナルで claude login を実行", flush=True)
         print("         ブラウザが開くのでClaudeアカウントで認証", flush=True)
         print("         Max/Proプランが必要\n", flush=True)
         print("      B) APIキーを環境変数にセット:", flush=True)
