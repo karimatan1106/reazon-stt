@@ -59,8 +59,10 @@ def send_to_claude(text):
         proc.wait(timeout=5)
         return result_text if result_text else None
     except FileNotFoundError:
-        print("  Claude CLI not found. セットアップ:", flush=True)
-        print("    npm install -g @anthropic-ai/claude-code", flush=True)
+        print("  Claude CLI not found. セットアップ手順:", flush=True)
+        print("    1. Node.js をインストール: https://nodejs.org/", flush=True)
+        print("    2. npm install -g @anthropic-ai/claude-code", flush=True)
+        print("    3. claude を起動してログインまたはAPIキーを設定", flush=True)
         return None
     except Exception as e:
         print(f"  Claude error: {e}", flush=True)
