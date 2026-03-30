@@ -17,6 +17,12 @@ Qwen3-ASR（CPU: 30秒/発話）の代替。ReazonSpeechは同等精度で0.3秒
 pip install sherpa-onnx sounddevice pynput numpy
 ```
 
+Claude Code連携（Ctrl+Shift+E）を使う場合:
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
 モデルファイル（int8、約153MB）は初回起動時に自動ダウンロードされる。
 
 ## 使い方
@@ -25,8 +31,9 @@ pip install sherpa-onnx sounddevice pynput numpy
 python stt.py
 ```
 
-- `Ctrl+Shift+R` : 録音開始 → 2秒無音で自動停止 → カーソル位置にテキスト貼り付け
-- 録音中に再度 `Ctrl+Shift+R` で手動停止も可
+- `Ctrl+Shift+R` : 録音 → テキスト貼り付け
+- `Ctrl+Shift+E` : 録音 → Claude Code で実行 → 結果をコンソール出力
+- 2秒無音で自動停止、録音中に再度押すと手動停止
 - `Ctrl+C` : 終了
 
 ## ファイル構成
@@ -35,6 +42,7 @@ python stt.py
 - `recognizer.py` - モデル読込、音声認識、テキスト正規化
 - `recorder.py` - 録音制御、無音検出
 - `clipboard.py` - Win32 クリップボード操作
+- `claude_runner.py` - Claude Code CLI 連携
 - `model/` - ReazonSpeech-k2-v2 モデルファイル（自動ダウンロード、gitignore）
 
 ## モデル

@@ -7,6 +7,7 @@ import tempfile
 import threading
 
 from clipboard import paste_text
+from claude_runner import send_to_claude
 from recognizer import load_model, transcribe
 from recorder import Recorder, save_wav, SILENCE_DURATION
 
@@ -22,12 +23,13 @@ def main():
     print(f"\n{'='*50}")
     print(f"  ReazonSpeech STT")
     print(f"  Ctrl+Shift+R: 音声→テキスト貼り付け")
+    print(f"  Ctrl+Shift+E: 音声→Claude Code実行")
     print(f"  {SILENCE_DURATION}秒無音で自動停止")
     print(f"  Ctrl+C で終了")
     print(f"{'='*50}\n")
     print("Ready.\n", flush=True)
 
-    def on_audio_ready(chunks):
+    def on_audio_ready(chunks, mode="paste"):
         if not chunks:
             print("No audio captured\n")
             return
@@ -39,8 +41,13 @@ def main():
             print(f"  [{elapsed:.1f}s] (no speech detected)\n", flush=True)
             return
         print(f"  [{elapsed:.1f}s] {text}", flush=True)
-        paste_text(text)
-        print(flush=True)
+        if mode == "claude":
+            result = send_to_claude(text)
+            if result:
+                print(f"\n{result}\n", flush=True)
+        else:
+            paste_text(text)
+            print(flush=True)
 
     recorder = Recorder(on_audio_ready)
     pressed_keys = set()
@@ -51,8 +58,15 @@ def main():
             pynput_kb.Key.ctrl_l, pynput_kb.Key.ctrl_r, pynput_kb.Key.ctrl))
         shift = any(k in pressed_keys for k in (
             pynput_kb.Key.shift_l, pynput_kb.Key.shift_r, pynput_kb.Key.shift))
-        if ctrl and shift and getattr(key, 'vk', None) == 82:
-            threading.Thread(target=recorder.toggle, daemon=True).start()
+        vk = getattr(key, 'vk', None)
+        if ctrl and shift and vk == 82:
+            threading.Thread(
+                target=lambda: recorder.toggle("paste"), daemon=True
+            ).start()
+        elif ctrl and shift and vk == 69:
+            threading.Thread(
+                target=lambda: recorder.toggle("claude"), daemon=True
+            ).start()
 
     def on_release(key):
         pressed_keys.discard(key)

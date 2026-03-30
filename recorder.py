@@ -36,13 +36,15 @@ class Recorder:
         self._recording = False
         self._stream = None
         self._chunks = []
+        self._mode = "paste"
 
     @property
     def recording(self):
         return self._recording
 
-    def toggle(self):
+    def toggle(self, mode="paste"):
         if not self._recording:
+            self._mode = mode
             self._start()
         else:
             self._stop_and_process()
@@ -78,7 +80,8 @@ class Recorder:
         )
         self._stream.start()
         beep(800, 0.15)
-        print("Recording... (auto-stop on silence)", flush=True)
+        label = "CLAUDE" if self._mode == "claude" else "PASTE"
+        print(f"Recording [{label}]... (auto-stop on silence)", flush=True)
 
     def _stop_and_process(self):
         if self._stream:
@@ -88,4 +91,4 @@ class Recorder:
         self._recording = False
         beep(400, 0.15)
         print("Recognizing...", flush=True)
-        self._on_audio_ready(list(self._chunks))
+        self._on_audio_ready(list(self._chunks), self._mode)
