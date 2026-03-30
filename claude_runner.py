@@ -62,7 +62,9 @@ def send_to_claude(text):
         print("  Claude CLI not found. セットアップ手順:", flush=True)
         print("    1. Node.js をインストール: https://nodejs.org/", flush=True)
         print("    2. npm install -g @anthropic-ai/claude-code", flush=True)
-        print("    3. claude を起動してログインまたはAPIキーを設定", flush=True)
+        print("    3. 認証 (どちらか一方):", flush=True)
+        print("       A) Claudeアカウント: claude login", flush=True)
+        print("       B) APIキー: set ANTHROPIC_API_KEY=sk-...", flush=True)
         return None
     except Exception as e:
         print(f"  Claude error: {e}", flush=True)
